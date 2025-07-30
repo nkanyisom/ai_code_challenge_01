@@ -1,0 +1,796 @@
+{
+	"info": {
+		"_postman_id": "ai-code-challenge-2025",
+		"name": "AI Code Challenge - Performance Testing API",
+		"description": "Collection for testing the Spring Boot Performance Testing Application with both Performance Test APIs and Computation Controller endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"version": "1.0.0"
+	},
+	"item": [
+		{
+			"name": "Computation Controller",
+			"description": "Test endpoints for the ComputationController with inefficient algorithms",
+			"item": [
+				{
+					"name": "Inefficient Computation - Small (n=10)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains all required fields\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('primeCount');",
+									"    pm.expect(jsonData).to.have.property('fibonacci');",
+									"    pm.expect(jsonData).to.have.property('concatenatedLength');",
+									"    pm.expect(jsonData).to.have.property('matrixValue');",
+									"    pm.expect(jsonData).to.have.property('computationTimeMs');",
+									"});",
+									"",
+									"pm.test(\"Prime count is correct for n=10\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.primeCount).to.eql(4); // 2, 3, 5, 7",
+									"});",
+									"",
+									"pm.test(\"Response time is reasonable\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/compute/inefficient/10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"compute",
+								"inefficient",
+								"10"
+							]
+						},
+						"description": "Test computation with a small value (n=10) - should be fast"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/compute/inefficient/10",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"compute",
+										"inefficient",
+										"10"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": "{\n    \"primeCount\": 4,\n    \"fibonacci\": 55,\n    \"concatenatedLength\": 20,\n    \"matrixValue\": 810,\n    \"computationTimeMs\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Inefficient Computation - Medium (n=100)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains all required fields\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('primeCount');",
+									"    pm.expect(jsonData).to.have.property('fibonacci');",
+									"    pm.expect(jsonData).to.have.property('concatenatedLength');",
+									"    pm.expect(jsonData).to.have.property('matrixValue');",
+									"    pm.expect(jsonData).to.have.property('computationTimeMs');",
+									"});",
+									"",
+									"pm.test(\"Prime count is correct for n=100\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.primeCount).to.eql(25); // 25 primes up to 100",
+									"});",
+									"",
+									"pm.test(\"Computation time is recorded\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.computationTimeMs).to.be.at.least(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/compute/inefficient/100",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"compute",
+								"inefficient",
+								"100"
+							]
+						},
+						"description": "Test computation with a medium value (n=100) - will take some time"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/compute/inefficient/100",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"compute",
+										"inefficient",
+										"100"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": "{\n    \"primeCount\": 25,\n    \"fibonacci\": 6765,\n    \"concatenatedLength\": 290,\n    \"matrixValue\": 980100,\n    \"computationTimeMs\": 5\n}"
+						}
+					]
+				},
+				{
+					"name": "Inefficient Computation - Large (n=500)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains all required fields\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('primeCount');",
+									"    pm.expect(jsonData).to.have.property('fibonacci');",
+									"    pm.expect(jsonData).to.have.property('concatenatedLength');",
+									"    pm.expect(jsonData).to.have.property('matrixValue');",
+									"    pm.expect(jsonData).to.have.property('computationTimeMs');",
+									"});",
+									"",
+									"pm.test(\"Computation time is significant for large n\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.computationTimeMs).to.be.above(10);",
+									"});",
+									"",
+									"pm.test(\"Response time should be reasonable (under 30s)\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(30000);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/compute/inefficient/500",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"compute",
+								"inefficient",
+								"500"
+							]
+						},
+						"description": "Test computation with a large value (n=500) - will demonstrate performance issues"
+					},
+					"response": []
+				},
+				{
+					"name": "Inefficient Computation - Performance Test (n=1000)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains computation time\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.computationTimeMs).to.be.a('number');",
+									"    console.log('Computation Time: ' + jsonData.computationTimeMs + 'ms');",
+									"});",
+									"",
+									"pm.test(\"All computations completed\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.primeCount).to.be.above(0);",
+									"    pm.expect(jsonData.fibonacci).to.be.above(0);",
+									"    pm.expect(jsonData.concatenatedLength).to.be.above(0);",
+									"    pm.expect(jsonData.matrixValue).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/compute/inefficient/1000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"compute",
+								"inefficient",
+								"1000"
+							]
+						},
+						"description": "Performance test with large computation (n=1000) - expect significant processing time"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Performance Test API",
+			"description": "Test endpoints for the Performance Testing API",
+			"item": [
+				{
+					"name": "Create Performance Test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response is successful\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Test ID is generated\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.testId).to.be.a('string');",
+									"    pm.globals.set('testId', jsonData.data.testId);",
+									"});",
+									"",
+									"pm.test(\"Status is PENDING\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.status).to.eql('PENDING');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"testName\": \"API Load Test\",\n    \"durationSeconds\": 30,\n    \"loadLevel\": 10,\n    \"description\": \"Testing API performance under moderate load\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/performance/tests",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"performance",
+								"tests"
+							]
+						},
+						"description": "Create a new performance test"
+					},
+					"response": []
+				},
+				{
+					"name": "Start Performance Test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Test is running\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.status).to.eql('RUNNING');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/performance/tests/{{testId}}/start",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"performance",
+								"tests",
+								"{{testId}}",
+								"start"
+							]
+						},
+						"description": "Start the created performance test"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Test Result",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains test data\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.testId).to.be.a('string');",
+									"    pm.expect(jsonData.data.testName).to.be.a('string');",
+									"    pm.expect(jsonData.data.status).to.be.a('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/performance/tests/{{testId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"performance",
+								"tests",
+								"{{testId}}"
+							]
+						},
+						"description": "Get the test results"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Tests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains test list\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/performance/tests",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"performance",
+								"tests"
+							]
+						},
+						"description": "Get all performance tests"
+					},
+					"response": []
+				},
+				{
+					"name": "Load Simulation - Quick Test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Simulation completed\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.status).to.eql('COMPLETED');",
+									"});",
+									"",
+									"pm.test(\"Metrics are present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.metrics).to.have.property('totalRequests');",
+									"    pm.expect(jsonData.data.metrics).to.have.property('successfulRequests');",
+									"    pm.expect(jsonData.data.metrics).to.have.property('averageResponseTime');",
+									"    pm.expect(jsonData.data.metrics).to.have.property('throughput');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/performance/load-test?requests=50&delayMs=100",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"performance",
+								"load-test"
+							],
+							"query": [
+								{
+									"key": "requests",
+									"value": "50"
+								},
+								{
+									"key": "delayMs",
+									"value": "100"
+								}
+							]
+						},
+						"description": "Run a quick load simulation"
+					},
+					"response": []
+				},
+				{
+					"name": "Load Simulation - Stress Test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"High load simulation completed\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.status).to.eql('COMPLETED');",
+									"    pm.expect(jsonData.data.metrics.totalRequests).to.eql(500);",
+									"});",
+									"",
+									"pm.test(\"Performance metrics are reasonable\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.metrics.errorRate).to.be.below(10); // Less than 10% error rate",
+									"    pm.expect(jsonData.data.metrics.throughput).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/performance/load-test?requests=500&delayMs=50",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"performance",
+								"load-test"
+							],
+							"query": [
+								{
+									"key": "requests",
+									"value": "500"
+								},
+								{
+									"key": "delayMs",
+									"value": "50"
+								}
+							]
+						},
+						"description": "Run a stress test with higher load"
+					},
+					"response": []
+				},
+				{
+					"name": "Health Check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Service is healthy\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.eql('OK');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/performance/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"performance",
+								"health"
+							]
+						},
+						"description": "Check if the service is healthy"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Test deleted successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.message).to.contain('deleted');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/performance/tests/{{testId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"performance",
+								"tests",
+								"{{testId}}"
+							]
+						},
+						"description": "Delete the performance test"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Spring Boot Actuator",
+			"description": "Monitor application health and metrics",
+			"item": [
+				{
+					"name": "Application Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/actuator/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						},
+						"description": "Check application health status"
+					},
+					"response": []
+				},
+				{
+					"name": "Application Metrics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/actuator/metrics",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"actuator",
+								"metrics"
+							]
+						},
+						"description": "Get application metrics"
+					},
+					"response": []
+				},
+				{
+					"name": "JVM Memory Metrics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/actuator/metrics/jvm.memory.used",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"actuator",
+								"metrics",
+								"jvm.memory.used"
+							]
+						},
+						"description": "Get JVM memory usage metrics"
+					},
+					"response": []
+				},
+				{
+					"name": "HTTP Request Metrics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/actuator/metrics/http.server.requests",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"actuator",
+								"metrics",
+								"http.server.requests"
+							]
+						},
+						"description": "Get HTTP request metrics"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
